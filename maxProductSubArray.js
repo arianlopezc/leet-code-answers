@@ -19,5 +19,3 @@ var maxProduct = function(nums) {
     }
     return maxProduct;
 };
-
-console.log(maxProduct([0, 2]));
