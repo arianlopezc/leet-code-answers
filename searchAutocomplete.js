@@ -80,21 +80,3 @@ AutocompleteSystem.prototype.getTopThree = function(node, suggestions, word) {
     }
     return;
 }
-
-var obj = new AutocompleteSystem(["abc","abbc","a"],[3,3,3])
-obj.input("b");
-obj.input("c");
-obj.input("#");
-obj.input("b");
-obj.input("c");
-obj.input("#");
-obj.input("a");
-obj.input("b");
-obj.input("c");
-obj.input("#");
-obj.input("a");
-obj.input("b");
-obj.input("c");
-obj.input("#");
-obj.input("#");["AutocompleteSystem","input","input","input","input","input","input","input","input","input","input","input","input","input","input"]
-[[["abc","abbc","a"],[3,3,3]],["b"],["c"],["#"],["b"],["c"],["#"],["a"],["b"],["c"],["#"],["a"],["b"],["c"],["#"]]
