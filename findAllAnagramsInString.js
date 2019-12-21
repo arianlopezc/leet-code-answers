@@ -6,71 +6,55 @@
 var findAnagrams = function(s, p) {
     if (s.length === 0 || p.length > s.length)
         return [];
-    let mapP = initMap(new Map(), p);
     const result = [];
-    let checked = 0;
-    let lastValidInit = 0;
-    let triggeredLast = false;
-    for (let index = 0; index < s.length; index++) {
-        const letter = s[index];
-        let current = mapP.get(letter);
-        if (!triggeredLast) {
-            triggeredLast = true;
-            lastValidInit = index;
-        }
-        if (current) {
-            checked++;
-            current--;
-            if (current < 0) {
-                mapP = initMap(new Map(), p);
-                index = lastValidInit;
-            } else {
-                mapP.set(letter, current);
-                if (checked === p.length) {
-                    const allCovered = isMapCompleted(mapP);
-                    if (allCovered) {
-                        result.push(lastValidInit);
-                        index = lastValidInit;
-                        checked = 0;
-                    }
-                    mapP = initMap(new Map(), p);
-                }
-            }
+    for (let index = 0; index <= s.length - p.length;) {
+        let map = initializeMap(p);
+        const totalMatched = obtainTotalMatching(map, s.substr(index, p.length));
+        if (totalMatched === p.length) {
+            result.push(index);
+            index++;
         } else {
-            if (checked > 0)
-                mapP = initMap(new Map(), p);
-            checked = 0;
-            lastValidInit = index + 1;
-            triggeredLast = false;
+            index += totalMatched > 0 ? totalMatched > 1 ? totalMatched - 1 : 1 : 1;
         }
     }
     return result;
 };
 
 /**
- * @param {Map} mapP
- * @return {boolean}
+ * @param {Map} map
+ * @param {string} sub
+ * @return {number}
  */
-function isMapCompleted(mapP) {
-    for (let value of mapP.values()) {
-        if (value !== 0) {
-            return false;
+function obtainTotalMatching(map, sub) {
+    let total = 0;
+    for (let letter of sub) {
+        const val = map.get(letter);
+        if (!val) {
+            return total;
+        } else {
+            map.set(letter, val - 1);
+            if (val < 0) {
+                return total;
+            } else {
+                total++;
+            }
         }
     }
-    return true;
+    return total;
 }
 
 /**
- * @param {Map} mapP
  * @param {string} p
- * @return {boolean}
+ * @return {Map}
  */
-function initMap(mapP, p) {
-    for (let index = 0; index < p.length; index++) {
-        const prev = mapP.get(p[index]);
-        mapP.set(p[index], !prev ? 1 : prev + 1);
+function initializeMap(p) {
+    const map = new Map();
+    for (let letter of p) {
+        const total = map.get(letter);
+        if (total)
+            map.set(letter, total + 1);
+        else
+            map.set(letter, 1);
     }
-    return mapP;
+    return map;
 }
-
-findAnagrams("babacd", "abc");
