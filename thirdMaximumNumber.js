@@ -1,3 +1,31 @@
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var thirdMax = function(nums) {
+    const heap = new Heap(true);
+    for (let number of nums) {
+        heap.insert(number);
+    }
+    const firstMaximum = heap.poll();
+    let totalCovered = 1;
+    let lastMaximum = firstMaximum;
+    let stop = false;
+    for (let index = 0; index < 2 && !stop;) {
+        const temp = heap.poll();
+        if (!isNaN(temp)) {
+            if (temp !== lastMaximum) {
+                index++;
+                totalCovered++;
+            }
+            lastMaximum = temp;
+        } else {
+            stop = true;
+        }
+    }
+    return totalCovered === 3 ? lastMaximum : firstMaximum;
+};
+
 function Heap(maxHeap = false) {
     this.heap = [];
     this.maxHeap = maxHeap;
