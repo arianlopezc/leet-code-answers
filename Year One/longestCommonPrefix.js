@@ -4,7 +4,7 @@
  */
 var longestCommonPrefix = function(strs) {
     if (strs.length <= 1)
-        return strs.length === 1 ? strs.pop() : '';
+        return strs.pop();
     const word = strs.pop();
     let keepGoing = true;
     let limit = 0;

@@ -1,8 +1,9 @@
 /**
  * Definition for a binary tree node.
- * function TreeNode(val) {
- *     this.val = val;
- *     this.left = this.right = null;
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
  * }
  */
 /**
@@ -10,35 +11,25 @@
  * @return {boolean}
  */
 var isValidBST = function(root) {
-    const toBeSorted = [];
-    doInOrder(root, toBeSorted);
-    return isOrdered(toBeSorted);
-};
-
-function doInOrder(root, sortedItems) {
-    if (root) {
-        if (root.left) {
-            doInOrder(root.left, sortedItems);
-        }
-        sortedItems.push(root.val);
-        if (root.right) {
-            doInOrder(root.right, sortedItems);
-        }
+    if (!root) {
+        return true;
     }
-}
-
-function isOrdered(elements) {
-    if (elements.length <= 1) return true;
-    let smaller = elements[0];
-    for (let item of elements) {
-        if (smaller > item) {
+    const visited = [];
+    getPreOrder(root, visited);
+    for (let index = 0; index < visited.length - 1; index++) {
+        if (visited[index] >= visited[index + 1]) {
             return false;
         }
     }
     return true;
-}
+};
 
-function TreeNode(val) {
-    this.val = val;
-    this.left = this.right = null;
+function getPreOrder(node, visited) {
+    if (node.left) {
+        getPreOrder(node.left, visited);
+    }
+    visited.push(node.val);
+    if (node.right) {
+        getPreOrder(node.right, visited);
+    }
 }

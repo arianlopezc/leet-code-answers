@@ -6,24 +6,19 @@
  * }
  */
 
-function ListNode(val) {
-    this.val = val;
-    this.next = null;
-}
-
 /**
  * @param {ListNode} head
  * @return {boolean}
  */
 var hasCycle = function(head) {
-    if (!head)
-        return false;
-    else if (!head.hasOwnProperty('visited')) {
-        head.visited = true;
-        if (head.next)
-            return hasCycle(head.next);
-        else return false;
-    } else {
-        return true;
+    const set = new Set();
+    while (head) {
+        if (!set.has(head.val)) {
+            set.add(head.val);
+        } else {
+            return true;
+        }
+        head = head.next;
     }
+    return false;
 };
